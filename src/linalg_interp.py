@@ -3,6 +3,7 @@
 import numpy as np
 
 NONE = 0
+MAX_ITERATIONS = 100
 
 
 def guess_iter_solve(A, b, x0, tol, alg):
@@ -35,6 +36,13 @@ def guess_iter_solve(A, b, x0, tol, alg):
     numpy.ndarray:
         Should be the shape as b
     """
+
+    #Default
+    x0 = NONE
+    tol = 1e-8
+    alg = 'seidel'
+
+
     #Raising Errors
         #array like check
     A = np.array(A, dtype = float)
@@ -52,8 +60,8 @@ def guess_iter_solve(A, b, x0, tol, alg):
     
     #Checking if b is 1D 
     ndimb = len(b.shape)
-    if ndimb != 1:
-        raise ValueError(f"b has {ndimb} dimensions" + ", should be 1D")
+    if ndimb != 1 or ndimb != 2:
+        raise ValueError(f"b has {ndimb} dimensions" + ", should be 1D or 2D")
     
     #Checking that A and b are compatable
     n = len(b) #amount of rows
@@ -72,10 +80,7 @@ def guess_iter_solve(A, b, x0, tol, alg):
     else:
         raise ValueError("Entered a string other than 'seidel' or 'jacobi'")
 
-    #Default
-    x0 = NONE
-    tol = 1e-8
-    alg = 'seidel'
+    
 
 
 
