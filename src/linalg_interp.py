@@ -80,6 +80,12 @@ def guess_iter_solve(A, b, x0, tol, alg):
     else:
         raise ValueError("Entered a string other than 'seidel' or 'jacobi'")
 
+
+
+    #Creating x0
+    if x0 == NONE:
+        x0 = np.zeros((n,len(b[1])), dtype = int)#.reshape((len(b[0]),m))
+        #This should give x0 whatever shape b is
     
 
 
