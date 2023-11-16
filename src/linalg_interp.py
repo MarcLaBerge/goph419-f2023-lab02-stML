@@ -1,6 +1,11 @@
 #Author : Marc Laberge
 
-def guess_iter_solve():
+import numpy as np
+
+NONE = 0
+
+
+def guess_iter_solve(A, b, x0, tol, alg):
     """
     Using iterative Gauss-Seidel to solve a linear system
     
@@ -10,16 +15,16 @@ def guess_iter_solve():
         An array containing the coefficient matrix
     b:
         An array containing the right-hand-side vector(s)
-    x0:
+    x0: (optional)
         An array containing initial guess(es)
         Defult guess is 0 or None
         When a value is entered it should be the same shape as b
         Raise error if A,b,x0 shapes arn't compatable
-    tol:
+    tol: (optional)
         A float of felative error tolerance or stopping criterial
         Defult parameter = 1e-8
         Raise RuntimeWarning if the solution doesn't converge after a specified number of iterations
-    alg:
+    alg: (optional)
         A string flag for the algorithm to be used
         Option for 'seidel' or 'jacobi' iteration algorithm should be used
         Raise error if neither option above is entered
@@ -30,7 +35,57 @@ def guess_iter_solve():
     numpy.ndarray:
         Should be the shape as b
     """
-    pass
+    #Raising Errors
+        #array like check
+    A = np.array(A, dtype = float)
+    b = np.array(b, dtype = float)
+
+    #Checking if A is 2D
+    m = len(A) #returns number of rows
+    ndim = len(A.shape)
+    if ndim != 2: #has to be a 2d array
+        raise ValueError(f"A has {ndim} dimensions" + ", should be 2")
+
+    #Checking that A is square
+    if A.shape[1] != m: #Checking that the amounto of columns in row 1 is the same as the amount of rows
+        raise ValueError(f"A has {m} rows and {A.shape[1]} cols" + ", should be square")
+    
+    #Checking if b is 1D 
+    ndimb = len(b.shape)
+    if ndimb != 1:
+        raise ValueError(f"b has {ndimb} dimensions" + ", should be 1D")
+    
+    #Checking that A and b are compatable
+    n = len(b) #amount of rows
+    if n != m:
+        raise ValueError(f"A has {m} rows, B has {n} values" + ", dimensions incompatible")
+    
+    #Checking that 'seidel' or 'jacobi' is selected for alg
+    s = 'seidel'
+    sLow = s.lower()
+    if "seidel" in sLow:
+        alg = 'seidel'
+        print("You selected %s" %alg)
+    elif "jacobi" in sLow:
+        alg = 'jacobi'
+        print("You selected %s" %alg)
+    else:
+        raise ValueError("Entered a string other than 'seidel' or 'jacobi'")
+
+    #Default
+    x0 = NONE
+    tol = 1e-8
+    alg = 'seidel'
+
+
+
+
+
+
+
+
+
+
 
 def spline_function():
     """
