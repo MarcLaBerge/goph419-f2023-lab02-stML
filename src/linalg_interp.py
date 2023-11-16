@@ -89,6 +89,18 @@ def guess_iter_solve(A, b, x0, tol, alg):
     
 
 
+    #Seidel algorithm
+        #iterations
+        i = 1
+        #Approxiamte relative error
+        eps_a = 1
+    
+    if alg == 'seidel':
+       while eps_a > tol and i < MAX_ITERATIONS:
+           pass
+    
+
+
 
 
 
