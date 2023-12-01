@@ -69,7 +69,7 @@ def guess_iter_solve(A, b, x0, tol, alg):
         raise ValueError(f"A has {m} rows, B has {n} values" + ", dimensions incompatible")
     
     #Checking that 'seidel' or 'jacobi' is selected for alg
-    s = 'seidel'
+    s = alg.strip()
     sLow = s.lower()
     if "seidel" in sLow:
         alg = 'seidel'
@@ -80,15 +80,11 @@ def guess_iter_solve(A, b, x0, tol, alg):
     else:
         raise ValueError("Entered a string other than 'seidel' or 'jacobi'")
 
-
-
     #Creating x0
     if x0 == NONE:
         x0 = np.zeros((n,len(b[1])), dtype = int)#.reshape((len(b[0]),m))
         #This should give x0 whatever shape b is
     
-
-
     #Seidel algorithm
         #iterations
         i = 1
