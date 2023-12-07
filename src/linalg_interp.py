@@ -6,7 +6,7 @@ NONE = 0
 MAX_ITERATIONS = 100
 
 
-def guess_iter_solve(A, b, x0, tol, alg):
+def guess_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
     """
     Using iterative Gauss-Seidel to solve a linear system
     
@@ -37,12 +37,6 @@ def guess_iter_solve(A, b, x0, tol, alg):
         Should be the shape as b
     """
 
-    #Default
-    x0 = NONE
-    tol = 1e-8
-    alg = 'seidel'
-
-
     #Raising Errors
         #array like check
     A = np.array(A, dtype = float)
@@ -68,6 +62,14 @@ def guess_iter_solve(A, b, x0, tol, alg):
     if n != m:
         raise ValueError(f"A has {m} rows, B has {n} values" + ", dimensions incompatible")
     
+    # Initialize an inital guess of zeros, if no intial guess provided and check that x and b have the same shape
+    if not x0:
+        x = np.zeros_like(b)
+    else:
+        x = np.array(x0,dtype=float)
+        if x.shape != b.shape:
+            raise ValueError(f"X has shape {x.shape}, b has shape {b.shape}"+ ", should be same length") 
+    
     #Checking that 'seidel' or 'jacobi' is selected for alg
     s = alg.strip()
     sLow = s.lower()
@@ -82,31 +84,83 @@ def guess_iter_solve(A, b, x0, tol, alg):
 
     #Creating x0
     if x0 == NONE:
-        x0 = np.zeros((n,len(b[1])), dtype = int)#.reshape((len(b[0]),m))
+        x0 = np.zeros_like(b)
         #This should give x0 whatever shape b is
+    else:
+        #Checking if x0 is an array (np.array)
+        x0 = np.array(x0, dtype=float)
+        #Check that x0 is the same shape as b
+        if x0.shape != b.shape:
+            x0 = np.array_like(b)
+        #Checking that x0 is has 1 or 2 Dimensions
+        if x0.ndim not in [1,2]:
+            raise ValueError(f"x0 has {x0.ndim} dimensions, should be 1D or 2D")
+        #Checking that x0 has the same amount of rows as A and b
+        if len(x0) != m:
+            raise ValueError(f"x0 has {len(x0)} rows while A and b have {m} rows, systems are incompatitble")        
+
     
     #Seidel algorithm
         #iterations
-        i = 1
+        i = 0
         #Approxiamte relative error
-        eps_a = 1
+        eps_a = 2*tol
+
+        #Normalize matrix (coefficient and b vector)
+        ADiagonal = np.diag(1.0/np.diag(A))
+        bStar = ADiagonal @ b
+        AStar = ADiagonal @ A
+        A_s = AStar - np.eye(m)
+
+    while np.max(eps_a) > tol and i < MAX_ITERATIONS:
+        if alg == 'jacobi':
+            x_old = np.array(x0)
+            x0 = bStar - (AStar @ x_old)
+        elif alg == 'seidel':
+            x_old = np.array(x0)
+            for i, j in enumerate(A):
+                x0[i,:] = bStar[i:(i+1),:] - AStar[i:(i+1),:] @ x0
+        # Error for each calculation
+        num = x0 - x_old
+        eps_a = np.linalg.norm(num) / np.linalg.norm(x0)
+        i += 1
+        if i >= MAX_ITERATIONS:
+            raise RuntimeWarning(f"No convergence after {MAX_ITERATIONS} iterations, returning last updated x vector")
     
-    if alg == 'seidel':
-       while eps_a > tol and i < MAX_ITERATIONS:
-           pass
+    return (x)
+           
     
 
 
 
 
 
+def check_dom(A):
+
+    for i in range(len(A)):
+
+        on_d = abs(A[i,i])
+        off_d = 0
+        
+        for j in range(len(A)):
+
+            off_d += abs(A[i,j])
+
+        off_d -= on_d
+
+        if off_d > on_d:
+
+            return False
+
+    return True
 
 
 
 
 
 
-def spline_function():
+
+def spline_function(xd, yd, order = 3):
     """
     A function that uses 2 given vectors x and y to generate a spline function
 
@@ -134,4 +188,27 @@ def spline_function():
         -If the imput parameter is outside of the range of xd
 
     """
-    pass
+    #Check that values entered are compatable (arrays)
+    xd = np.aaray(xd, dtype = float)
+    yd = np.array(yd, dtype = float)
+
+    #Check that xd and yd have the same length
+    n = len(yd)
+    m = len(xd)
+    if (n != m):
+        raise ValueError(f"The length of xd {m} is not equal to the length of yd {n}, to be compatible, xd and yd must be the same shape")
+    
+    u = np.unique(xd)
+    k = len(u)
+    if k != m:
+        raise ValueError(f"The number of indipendent values {k} is not equal to the number of dependent variables {n}")
+
+    #Check that the order is either 1, 2, or 3
+    if order not in [1, 2, 3]:
+        raise ValueError(f"invalid order {order}, must be 1, 2, 3")
+    
+    #Check that the values of xd are in the proper order
+    if ((xd[i] <= xd[i+1] for i in range (m - 1))):
+
+
+
