@@ -189,7 +189,7 @@ def spline_function(xd, yd, order = 3):
 
     """
     #Check that values entered are compatable (arrays)
-    xd = np.aaray(xd, dtype = float)
+    xd = np.array(xd, dtype = float)
     yd = np.array(yd, dtype = float)
 
     #Check that xd and yd have the same length
@@ -208,7 +208,7 @@ def spline_function(xd, yd, order = 3):
         raise ValueError(f"invalid order {order}, must be 1, 2, 3")
     
     #Check that the values of xd are in the proper order
-    if (all(xd[i] <= xd[i+1] for i in range (m - 1))):
+    if (all (xd[i] >= xd[i+1] for i in range(m-1))):
         raise ValueError(f"values of xd must be in increasing order")
 
     #b = f2 - f1 / x2 - x1
@@ -234,7 +234,7 @@ def spline_function(xd, yd, order = 3):
             # ai = yi or fi
             a = yd[:-1]
             # b = first order divided difference
-            b = div_dif_1[:,-1]
+            b = div_dif_1[:-1]
             for xi in x:
                 i = np.array([np.nonzero(xd >= xi)[0][0] - 1 for xi in x])
                 i = np.where(i < 0, 0, i)

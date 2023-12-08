@@ -116,4 +116,4 @@ def main():
     plt.savefig('figures/density_vs_temperature_graphs')
 
 if __name__ == "__main__":
-    pass
+    main()
