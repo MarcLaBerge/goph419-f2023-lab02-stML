@@ -1,6 +1,6 @@
 # Author: Marc Laberge
 
-from lab02.linalg_interp import gauss_iter_solve
+from linalg_interp import gauss_iter_solve
 
 import numpy as np
 
@@ -11,9 +11,9 @@ import numpy as np
 def test_gauss_iter_solve():
     #Creating an example A matrix
     A = np.array([
-        [9,2,4],
-        [2,7,1],
-        [3,2,6],
+        [0,2,4],
+        [2,0,1],
+        [3,2,0],
     ])
     #Creating an example b matrix
     b = np.array([10,1,2])
