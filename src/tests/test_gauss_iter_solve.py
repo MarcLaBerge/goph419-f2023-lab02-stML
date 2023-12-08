@@ -1,6 +1,6 @@
 # Author: Marc Laberge
 
-from src.linalg_interp import gauss_iter_solve
+from lab02.linalg_interp import gauss_iter_solve
 
 import numpy as np
 

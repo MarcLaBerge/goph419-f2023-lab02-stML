@@ -4,7 +4,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from src.linalg_interp import spline_function
+from lab02.linalg_interp import spline_function
 
 
 def main():
