@@ -11,12 +11,12 @@ import numpy as np
 def test_gauss_iter_solve():
     #Creating an example A matrix
     A = np.array([
-        [0,2,4],
-        [2,0,1],
-        [3,2,0],
+        [1,0,0],
+        [0,1,0],
+        [0,0,1],
     ])
     #Creating an example b matrix
-    b = np.array([10,1,2])
+    b = np.array([1,1,1])
     #Creating an example guess
     testGuess = np.array([1,1,1])
 

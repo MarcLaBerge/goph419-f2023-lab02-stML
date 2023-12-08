@@ -89,9 +89,9 @@ def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
     else:
         #Checking if x0 is an array (np.array)
         x0 = np.array(x0, dtype=float)
-        #Check that x0 is the same shape as b
-        if x0.shape != b.shape:
-            x0 = np.array_like(b)
+        #Check that x0 is the same shape as b, reshape
+        if x0.ndim == 1:
+            x0 = np.reshape(x0, (n,1))
         #Checking that x0 is has 1 or 2 Dimensions
         if x0.ndim not in [1,2]:
             raise ValueError(f"x0 has {x0.ndim} dimensions, should be 1D or 2D")
@@ -102,15 +102,19 @@ def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
     
     #Seidel algorithm
         #iterations
-        i = 1
+    i = 1
         #Approxiamte relative error
-        eps_a = 2 * tol
-        print(eps_a)
-        #Normalize matrix (coefficient and b vector)
-        ADiagonal = np.diag(1.0/np.diag(A))
-        bStar = ADiagonal @ b
-        AStar = ADiagonal @ A
-        A_s = AStar - np.eye(m)
+    eps_a = 2 * tol
+    print(eps_a)
+
+    ADiagonal = np.diag(np.diag(A))
+    # inverse of ADiagonal 
+    A_d_inv = np.linalg.inv(ADiagonal)
+    # Determine normalized matrix A^*
+    A_ = A - ADiagonal
+    AStar = A_d_inv @ A_
+    # Determine normalized matrix B^*
+    bStar = A_d_inv @ b
 
     while np.max(eps_a) > tol and i < MAX_ITERATIONS:
         if alg == 'jacobi':
@@ -127,7 +131,7 @@ def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
         if i >= MAX_ITERATIONS:
             raise RuntimeWarning(f"No convergence after {MAX_ITERATIONS} iterations, returning last updated x vector")
     
-    return (x)
+    return (x0)
 
 
 
