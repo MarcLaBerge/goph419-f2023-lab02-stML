@@ -128,35 +128,6 @@ def guess_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
             raise RuntimeWarning(f"No convergence after {MAX_ITERATIONS} iterations, returning last updated x vector")
     
     return (x)
-           
-    
-
-
-
-
-
-def check_dom(A):
-
-    for i in range(len(A)):
-
-        on_d = abs(A[i,i])
-        off_d = 0
-        
-        for j in range(len(A)):
-
-            off_d += abs(A[i,j])
-
-        off_d -= on_d
-
-        if off_d > on_d:
-
-            return False
-
-    return True
-
-
-
-
 
 
 
