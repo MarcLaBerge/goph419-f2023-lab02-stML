@@ -1,6 +1,7 @@
-
+# Author: Marc Laberge
 
 from src.linalg_interp import gauss_iter_solve
+
 import numpy as np
 
 #Testing the Gauss solver
