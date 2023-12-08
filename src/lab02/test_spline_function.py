@@ -6,7 +6,7 @@ from linalg_interp import spline_function
 from scipy.interpolate import UnivariateSpline
 
 def test_spline_function():
-    #Testing the result of our splice function vs a premade function
+    #Testing the result of our splice function vs the expected functions
     #First find evenly spaces intervals
 
     x = np.linspace(-10, 10, 10)
@@ -38,36 +38,47 @@ def test_spline_function():
     
 
     axs[0].plot(x, linear, 'bo', label = 'linear spline')
-    axs[0].plot(x, y1, 'b', label = 'premade linear spline')
+    axs[0].plot(x, y1, 'b', label = 'linear equation')
     axs[0].legend()
 
     axs[1].plot(x, quadratic, 'bo', label = 'quadractic spline')
-    axs[1].plot(x, y2, 'b', label = 'premade quadractic spline')
+    axs[1].plot(x, y2, 'b', label = 'quadratic equation')
     axs[1].legend()
 
     axs[2].plot(x, cubic, 'bo', label = 'cubic spline')
-    axs[2].plot(x, y3, 'b', label = 'premade cubic spline')
+    axs[2].plot(x, y3, 'b', label = 'cubic equation')
     axs[2].legend()
     
+    # check spline_function(order = 3) against scipy.interpolate.UnivariateSpline() function
+    xd = np.linspace(1, 10, 50)
+    yd = np.exp(xd)
 
+    f_scipy = UnivariateSpline(xd, yd, k = 3, s = 0, ext = 'raise')
+    y_scipy = f_scipy(xd)
 
+    f_spline = spline_function(xd, yd, order = 3)
+    y_spline = f_spline(xd)
 
-    
-    """
-    plt.plot(x, linear, 'ro', label = 'linear function')
-    plt.plot(x, y1, 'r', label = 'linear interpolation')
+    fig, axs = plt.subplots(nrows = 1, ncols = 2, figsize = (16,12))
 
-    plt.plot(x, quadratic, 'gx', label = 'quadratic function')
-    plt.plot(x, y2, 'g', label = 'quadratic interpolation')
+    axs[0].plot(xd, yd, 'ko', label = 'data')
+    axs[0].set_xlabel('x')
+    axs[0].set_ylabel('y')
 
-    plt.plot(x, cubic, 'mD', label = 'cubic function')
-    plt.plot(x, y3, 'm', label = 'cubic interpolation')
+    axs[1].plot(xd, yd, 'ko', label = 'data')
+    axs[1].set_xlabel('x')
+    axs[1].set_ylabel('y')
 
-    plt.title('Spline Function Test for Linear, Quadratic, and Cubic Functions')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.legend()
-    """
+    axs[0].plot(xd, y_scipy, 'b', label = 'scipy interpolation')
+    axs[1].plot(xd, y_spline, 'm', label = 'GOPH419 spline_function')
+
+    fig.suptitle('Scipy Univariate Spline Function vs GOPH419 Spline Function')
+    fig.set_label('y')
+    axs[0].legend()
+    axs[1].legend()
+
+    plt.savefig('figures/spline_test2')
     plt.savefig('figures/spline_test1')
+    
 if __name__ == "__main__":
     test_spline_function()
