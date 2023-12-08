@@ -6,7 +6,7 @@ NONE = 0
 MAX_ITERATIONS = 100
 
 
-def guess_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
+def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
     """
     Using iterative Gauss-Seidel to solve a linear system
     
