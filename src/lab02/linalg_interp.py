@@ -102,10 +102,10 @@ def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
     
     #Seidel algorithm
         #iterations
-        i = 0
+        i = 1
         #Approxiamte relative error
         eps_a = 2 * tol
-
+        print(eps_a)
         #Normalize matrix (coefficient and b vector)
         ADiagonal = np.diag(1.0/np.diag(A))
         bStar = ADiagonal @ b
