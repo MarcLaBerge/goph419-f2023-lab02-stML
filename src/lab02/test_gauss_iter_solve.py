@@ -1,6 +1,6 @@
 # Author: Marc Laberge
 
-from lab02.linalg_interp import gauss_iter_solve
+from linalg_interp import gauss_iter_solve
 
 import numpy as np
 
@@ -11,9 +11,9 @@ import numpy as np
 def test_gauss_iter_solve():
     #Creating an example A matrix
     A = np.array([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9],
+        [0,2,3],
+        [4,0,6],
+        [7,8,0],
     ])
     #Creating an example b matrix
     b = np.array([10,11,12])
@@ -21,27 +21,27 @@ def test_gauss_iter_solve():
     testGuess = np.array([1,1,1])
 
     #Testing Jacobi with an initial guess
-    sol_jac = gauss_iter_solve(A, b, x0 = testGuess, alg = 'jacobi')
+    sol_jac = gauss_iter_solve(A, b, x0 = testGuess, tol = 1e-8, alg = 'jacobi')
     #Using function from numpy
     sol_by_np = np.linalg.solve(A, b)
     #Print the result... see if they're the same
     print(f"The Jacobi solution with an initial guess: {sol_jac} \nThe numpy solution using np.linalg.solve: {sol_by_np}\n")
 
     #Testing Jacobi withOUT an initial guess
-    sol_jac = gauss_iter_solve(A, b, x0 = None, alg = 'jacobi')
+    sol_jac = gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'jacobi')
     #Using function from numpy
     sol_by_np = np.linalg.solve(A, b)
     #Print the result... see if they're the same
     print(f"The Jacobi solution withOUT an initial guess: {sol_jac} \nThe numpy solution using np.linalg.solve: {sol_by_np} \n")
 
     #Testing Siedel with an initial guess
-    sol_sied = gauss_iter_solve(A, b, x0 = testGuess, alg = 'seidel')
+    sol_sied = gauss_iter_solve(A, b, x0 = testGuess, tol = 1e-8, alg = 'seidel')
     #Using function from numpy
     sol_by_np = np.linalg.solve(A,b)
     print(f"The Siedel soltuion with an initial guess: {sol_sied} \nThe numpy solution using np.linalg.solve: {sol_by_np} \n")
 
     #Testing Siedel withOUT an initial guess
-    sol_seid = gauss_iter_solve(A, b, x0 = None, alg = 'seidel')
+    sol_seid = gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel')
     #Using function from numpy
     sol_by_np = np.linalg.solve(A,b)
     print(f"The Siedel solution withOUt an initial guess: {sol_seid} \nThe numpy solution using np.linalg.solve: {sol_by_np} \n")

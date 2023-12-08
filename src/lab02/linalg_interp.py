@@ -54,7 +54,7 @@ def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
     
     #Checking if b is 1D 
     ndimb = len(b.shape)
-    if ndimb != 1 or ndimb != 2:
+    if ndimb != 1 and ndimb != 2:
         raise ValueError(f"b has {ndimb} dimensions" + ", should be 1D or 2D")
     
     #Checking that A and b are compatable
@@ -63,7 +63,7 @@ def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
         raise ValueError(f"A has {m} rows, B has {n} values" + ", dimensions incompatible")
     
     # Initialize an inital guess of zeros, if no intial guess provided and check that x and b have the same shape
-    if not x0:
+    if x0 is None:
         x = np.zeros_like(b)
     else:
         x = np.array(x0,dtype=float)
@@ -83,7 +83,7 @@ def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
         raise ValueError("Entered a string other than 'seidel' or 'jacobi'")
 
     #Creating x0
-    if x0 == NONE:
+    if x0 is None:
         x0 = np.zeros_like(b)
         #This should give x0 whatever shape b is
     else:
@@ -104,7 +104,7 @@ def gauss_iter_solve(A, b, x0 = None, tol = 1e-8, alg = 'seidel'):
         #iterations
         i = 0
         #Approxiamte relative error
-        eps_a = 2*tol
+        eps_a = 2 * tol
 
         #Normalize matrix (coefficient and b vector)
         ADiagonal = np.diag(1.0/np.diag(A))
